@@ -1,35 +1,70 @@
 
 import { Button } from "@/components/ui/button";
+import { ArrowRight } from "lucide-react";
 
 const Hero = () => {
   return (
-    <section 
-      className="relative min-h-screen flex items-center bg-cover bg-center bg-fixed"
-      style={{ 
-        backgroundImage: "linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.3)), url('/placeholder.svg')" 
-      }}
-    >
-      <div className="absolute inset-0 bg-gradient-to-r from-black/70 to-transparent"></div>
-      <div className="container-custom relative z-10 pt-20">
-        <div className="max-w-2xl text-white animate-fade-in">
-          <p className="text-gold-light mb-2 uppercase tracking-widest font-medium">Exclusive Opportunity</p>
-          <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold font-playfair leading-tight mb-6">
-            JOIN OUR PARTNERSHIP PROGRAM AND EARN WITH WHITEVILL
-          </h1>
-          <p className="text-lg md:text-xl mb-8 text-white/90 max-w-lg">
-            Be part of an exclusive network of real estate professionals earning commissions with WhiteVill's premium properties.
-          </p>
-          <div className="flex flex-wrap gap-4">
-            <Button className="btn-primary text-lg px-8 py-6" size="lg">
-              Join Now
-            </Button>
-            <Button 
-              variant="outline" 
-              size="lg"
-              className="border-white text-white hover:bg-white hover:text-black transition-colors text-lg px-8 py-6"
-            >
-              Learn More
-            </Button>
+    <section className="relative py-20 md:py-32 overflow-hidden hero-pattern">
+      <div className="container-custom">
+        <div className="grid gap-8 lg:grid-cols-2 lg:gap-16 items-center">
+          <div className="space-y-6 animate-fade-in">
+            <div className="inline-flex items-center rounded-full border px-4 py-1.5 text-sm font-medium bg-background">
+              <span className="flex h-2 w-2 rounded-full bg-primary mr-2"></span>
+              Exclusive Partnership Opportunity
+            </div>
+            
+            <h1 className="text-4xl font-extrabold tracking-tight md:text-5xl lg:text-6xl">
+              Join Our Partnership <br className="hidden md:inline" />
+              <span className="text-gradient">Program with WhiteVill</span>
+            </h1>
+            
+            <p className="text-lg md:text-xl text-muted-foreground max-w-lg">
+              Be part of an exclusive network of real estate professionals earning premium commissions with WhiteVill's luxury properties.
+            </p>
+            
+            <div className="flex flex-wrap gap-4">
+              <Button size="lg" className="group">
+                Join Now
+                <ArrowRight className="ml-2 h-4 w-4 transition-transform group-hover:translate-x-1" />
+              </Button>
+              <Button variant="outline" size="lg">
+                Learn More
+              </Button>
+            </div>
+          </div>
+          
+          <div className="relative">
+            <div className="aspect-square rotate-3 rounded-2xl bg-muted object-cover shadow-xl hidden md:block">
+              <div className="absolute inset-0 rounded-2xl bg-gradient-to-br from-violet-400 to-indigo-600 opacity-20"></div>
+              <img
+                src="/placeholder.svg"
+                alt="Property image"
+                className="h-full w-full rounded-2xl object-cover mix-blend-overlay"
+              />
+            </div>
+            
+            <div className="absolute -bottom-12 -left-12 aspect-square w-64 rounded-2xl bg-muted object-cover shadow-xl hidden lg:block">
+              <img
+                src="/placeholder.svg"
+                alt="Interior image"
+                className="h-full w-full rounded-2xl object-cover"
+              />
+            </div>
+          </div>
+        </div>
+      </div>
+      
+      <div className="mt-16 border-t bg-background/50 py-8 backdrop-blur-sm">
+        <div className="container-custom">
+          <div className="flex flex-wrap items-center justify-center gap-8 md:justify-between">
+            <p className="text-center text-sm font-medium md:text-left">
+              Trusted by industry leaders
+            </p>
+            <div className="flex flex-wrap items-center justify-center gap-8 grayscale">
+              {[1, 2, 3, 4].map((i) => (
+                <div key={i} className="h-8 w-28 bg-muted rounded-md"></div>
+              ))}
+            </div>
           </div>
         </div>
       </div>
