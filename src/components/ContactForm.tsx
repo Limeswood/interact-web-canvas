@@ -3,54 +3,109 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { useToast } from "@/components/ui/use-toast";
-import { LoaderCircle } from "lucide-react";
+import { LoaderCircle, AlertCircle } from "lucide-react";
+import { ApiService, ContactFormData, contactFormSchema } from "@/lib/api";
+import { Alert, AlertDescription } from "@/components/ui/alert";
+import { Select } from '@/components/ui/select';
+
 const ContactForm = () => {
-  const {
-    toast
-  } = useToast();
-  const [formData, setFormData] = useState({
+  const { toast } = useToast();
+  const [formData, setFormData] = useState<ContactFormData>({
     name: "",
     email: "",
-    company: "",
+    phone: "",
+    role: "agent",
     message: ""
   });
+  const [errors, setErrors] = useState<Partial<Record<keyof ContactFormData, string>>>({});
   const [loading, setLoading] = useState(false);
   const [formState, setFormState] = useState<'idle' | 'submitting' | 'success' | 'error'>('idle');
-  const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
-    const {
-      name,
-      value
-    } = e.target;
-    setFormData({
-      ...formData,
-      [name]: value
-    });
+
+  const validateField = (name: keyof ContactFormData, value: string) => {
+    try {
+      contactFormSchema.shape[name].parse(value);
+      setErrors(prev => ({ ...prev, [name]: undefined }));
+      return true;
+    } catch (error) {
+      if (error instanceof Error) {
+        setErrors(prev => ({ ...prev, [name]: error.message }));
+      }
+      return false;
+    }
   };
-  const handleSubmit = (e: React.FormEvent) => {
+
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
+    const { name, value } = e.target;
+    setFormData(prev => ({ ...prev, [name]: value }));
+    validateField(name as keyof ContactFormData, value);
+  };
+
+  const handleBlur = (e: React.FocusEvent<HTMLInputElement | HTMLTextAreaElement>) => {
+    const { name, value } = e.target;
+    validateField(name as keyof ContactFormData, value);
+  };
+
+  const handleRoleChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
+    setFormData(prev => ({ ...prev, role: e.target.value as ContactFormData['role'] }));
+    validateField('role', e.target.value);
+  };
+
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
+    
+    // Validate all fields
+    const validationResult = contactFormSchema.safeParse(formData);
+    if (!validationResult.success) {
+      const newErrors: Partial<Record<keyof ContactFormData, string>> = {};
+      validationResult.error.errors.forEach(error => {
+        const path = error.path[0] as keyof ContactFormData;
+        newErrors[path] = error.message;
+      });
+      setErrors(newErrors);
+      return;
+    }
+
     setLoading(true);
     setFormState('submitting');
 
-    // Simulate form submission
-    setTimeout(() => {
+    try {
+      const response = await ApiService.submitContactForm(formData);
+      
+      if (response.status === 'success') {
+        toast({
+          title: "Form submitted successfully!",
+          description: "We'll be in touch with you shortly.",
+        });
+        setFormState('success');
+        setFormData({
+          name: "",
+          email: "",
+          phone: "",
+          role: "agent",
+          message: ""
+        });
+        setErrors({});
+      } else {
+        throw new Error(response.error || 'Failed to submit form');
+      }
+    } catch (error) {
+      setFormState('error');
+      console.error('Contact form submission error:', error);
       toast({
-        title: "Form submitted!",
-        description: "We'll be in touch with you shortly."
+        variant: "destructive",
+        title: "Error submitting form",
+        description: error instanceof Error ? error.message : "An unexpected error occurred",
       });
+    } finally {
       setLoading(false);
-      setFormState('success');
-      setFormData({
-        name: "",
-        email: "",
-        company: "",
-        message: ""
-      });
-      setTimeout(() => {
-        setFormState('idle');
-      }, 3000);
-    }, 1500);
+      if (formState === 'success') {
+        setTimeout(() => setFormState('idle'), 3000);
+      }
+    }
   };
-  return <section id="contact" className="section bg-white">
+
+  return (
+    <section id="contact" className="section bg-white">
       <div className="container-custom">
         <div className="grid md:grid-cols-2 gap-12 items-center">
           <div>
@@ -60,50 +115,190 @@ const ContactForm = () => {
               properties, competitive commissions, and comprehensive support tools.
             </p>
             <div className="rounded-lg overflow-hidden transform transition-all duration-500 hover:scale-[1.02] hover:shadow-lg">
-              <img alt="WhiteVill Headquarters" className="w-full h-auto object-cover" src="/lovable-uploads/29a0c430-21b8-42cf-836b-1549127e2a49.jpg" />
+              <img 
+                src="/lovable-uploads/29a0c430-21b8-42cf-836b-1549127e2a49.jpg"
+                alt="Limeswood Headquarters" 
+                className="w-full h-auto object-cover"
+                loading="lazy"
+              />
             </div>
           </div>
           
-          <div className="bg-whitevill-beige p-8 rounded-lg shadow-lg transform transition-all duration-500 hover:shadow-xl">
-            <form onSubmit={handleSubmit} className="space-y-6">
+          <div className="bg-gray-50 p-8 rounded-lg shadow-lg transform transition-all duration-500 hover:shadow-xl">
+            {formState === 'error' && (
+              <Alert variant="destructive" className="mb-6">
+                <AlertCircle className="h-4 w-4" />
+                <AlertDescription>
+                  There was an error submitting your form. Please try again.
+                </AlertDescription>
+              </Alert>
+            )}
+            
+            <form onSubmit={handleSubmit} className="space-y-6" noValidate>
               <div>
                 <label htmlFor="name" className="block mb-2 font-medium">
                   Full Name
                 </label>
-                <Input id="name" name="name" value={formData.name} onChange={handleChange} placeholder="Your full name" required className="bg-white border-gray-300 transition-all focus:ring-2 focus:ring-primary/20" disabled={loading} />
+                <Input
+                  id="name"
+                  name="name"
+                  value={formData.name}
+                  onChange={handleChange}
+                  onBlur={handleBlur}
+                  placeholder="Your full name"
+                  required
+                  className={`bg-white border-gray-300 transition-all focus:ring-2 focus:ring-primary/20 ${
+                    errors.name ? 'border-red-500' : ''
+                  }`}
+                  disabled={loading}
+                  aria-invalid={!!errors.name}
+                  aria-describedby={errors.name ? 'name-error' : undefined}
+                />
+                {errors.name && (
+                  <p id="name-error" className="mt-1 text-sm text-red-500">
+                    {errors.name}
+                  </p>
+                )}
               </div>
               
               <div>
                 <label htmlFor="email" className="block mb-2 font-medium">
                   Email Address
                 </label>
-                <Input id="email" name="email" type="email" value={formData.email} onChange={handleChange} placeholder="you@example.com" required className="bg-white border-gray-300 transition-all focus:ring-2 focus:ring-primary/20" disabled={loading} />
+                <Input
+                  id="email"
+                  name="email"
+                  type="email"
+                  value={formData.email}
+                  onChange={handleChange}
+                  onBlur={handleBlur}
+                  placeholder="you@example.com"
+                  required
+                  className={`bg-white border-gray-300 transition-all focus:ring-2 focus:ring-primary/20 ${
+                    errors.email ? 'border-red-500' : ''
+                  }`}
+                  disabled={loading}
+                  aria-invalid={!!errors.email}
+                  aria-describedby={errors.email ? 'email-error' : undefined}
+                />
+                {errors.email && (
+                  <p id="email-error" className="mt-1 text-sm text-red-500">
+                    {errors.email}
+                  </p>
+                )}
               </div>
               
               <div>
-                <label htmlFor="company" className="block mb-2 font-medium">
-                  Company Name
+                <label htmlFor="phone" className="block mb-2 font-medium">
+                  Phone Number
                 </label>
-                <Input id="company" name="company" value={formData.company} onChange={handleChange} placeholder="Your company name" className="bg-white border-gray-300 transition-all focus:ring-2 focus:ring-primary/20" disabled={loading} />
+                <Input
+                  id="phone"
+                  name="phone"
+                  type="tel"
+                  value={formData.phone}
+                  onChange={handleChange}
+                  onBlur={handleBlur}
+                  placeholder="Your phone number"
+                  required
+                  className={`bg-white border-gray-300 transition-all focus:ring-2 focus:ring-primary/20 ${
+                    errors.phone ? 'border-red-500' : ''
+                  }`}
+                  disabled={loading}
+                  aria-invalid={!!errors.phone}
+                  aria-describedby={errors.phone ? 'phone-error' : undefined}
+                />
+                {errors.phone && (
+                  <p id="phone-error" className="mt-1 text-sm text-red-500">
+                    {errors.phone}
+                  </p>
+                )}
+              </div>
+              
+              <div>
+                <label htmlFor="role" className="block mb-2 font-medium">
+                  You are
+                </label>
+                <select
+                  id="role"
+                  name="role"
+                  value={formData.role}
+                  onChange={handleRoleChange}
+                  onBlur={handleRoleChange}
+                  required
+                  className={`bg-white border-gray-300 transition-all focus:ring-2 focus:ring-primary/20 ${
+                    errors.role ? 'border-red-500' : ''
+                  } w-full rounded-md p-2`}
+                  disabled={loading}
+                  aria-invalid={!!errors.role}
+                  aria-describedby={errors.role ? 'role-error' : undefined}
+                >
+                  <option value="agent">Agent</option>
+                  <option value="individual">Individual</option>
+                  <option value="agency">Agency</option>
+                  <option value="other">Other</option>
+                </select>
+                {errors.role && (
+                  <p id="role-error" className="mt-1 text-sm text-red-500">
+                    {errors.role}
+                  </p>
+                )}
               </div>
               
               <div>
                 <label htmlFor="message" className="block mb-2 font-medium">
                   Message
                 </label>
-                <Textarea id="message" name="message" value={formData.message} onChange={handleChange} placeholder="Tell us about your experience and interests" rows={4} className="bg-white border-gray-300 transition-all focus:ring-2 focus:ring-primary/20" disabled={loading} />
+                <Textarea
+                  id="message"
+                  name="message"
+                  value={formData.message}
+                  onChange={handleChange}
+                  onBlur={handleBlur}
+                  placeholder="Tell us about your experience and interests (optional)"
+                  rows={4}
+                  className={`bg-white border-gray-300 transition-all focus:ring-2 focus:ring-primary/20 ${
+                    errors.message ? 'border-red-500' : ''
+                  }`}
+                  disabled={loading}
+                  aria-invalid={!!errors.message}
+                  aria-describedby={errors.message ? 'message-error' : undefined}
+                />
+                {errors.message && (
+                  <p id="message-error" className="mt-1 text-sm text-red-500">
+                    {errors.message}
+                  </p>
+                )}
               </div>
               
-              <Button type="submit" className={`bg-whitevill-red hover:bg-opacity-90 text-white w-full py-6 transition-all ${formState === 'success' ? 'bg-green-600' : formState === 'error' ? 'bg-red-600' : 'bg-whitevill-red'}`} disabled={loading}>
-                {loading ? <span className="flex items-center justify-center">
+              <Button
+                type="submit"
+                className={`w-full py-6 transition-all ${
+                  formState === 'success'
+                    ? 'bg-green-600 hover:bg-green-700'
+                    : formState === 'error'
+                    ? 'bg-red-600 hover:bg-red-700'
+                    : 'bg-limeswood-red hover:bg-opacity-90'
+                } text-white`}
+                disabled={loading}
+              >
+                {loading ? (
+                  <span className="flex items-center justify-center">
                     <LoaderCircle className="animate-spin mr-2" size={20} />
                     Submitting...
-                  </span> : formState === 'success' ? "Submitted Successfully!" : "Submit Application"}
+                  </span>
+                ) : formState === 'success' ? (
+                  "Submitted Successfully!"
+                ) : (
+                  "Submit Application"
+                )}
               </Button>
             </form>
           </div>
         </div>
       </div>
-    </section>;
+    </section>
+  );
 };
+
 export default ContactForm;

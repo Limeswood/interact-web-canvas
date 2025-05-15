@@ -1,4 +1,3 @@
-
 import type { Config } from "tailwindcss";
 
 export default {
@@ -68,7 +67,7 @@ export default {
 					DEFAULT: '#b8860b',
 					dark: '#85682c'
 				},
-				whitevill: {
+				limeswood: {
 					red: '#9e2b25',
 					cream: '#f5f5dc',
 					copper: '#b87333',

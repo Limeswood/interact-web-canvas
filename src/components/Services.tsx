@@ -4,12 +4,12 @@ import { CheckCircle } from "lucide-react";
 const Services = () => {
   const services = [
     {
-      title: "Real Estate Agencies",
+      title: "Agencies",
       description: "Partner with established agencies looking to expand their portfolio with premium properties",
       features: ["Higher commission rates", "Exclusive property access", "Marketing support"]
     },
     {
-      title: "Independent Agents",
+      title: "Independent Professionals",
       description: "Support for solo professionals seeking access to exclusive properties and higher commissions",
       features: ["Flexible schedules", "On-demand training", "Personal branding tools"]
     },

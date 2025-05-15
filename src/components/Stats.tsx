@@ -13,17 +13,17 @@ const Stats = () => {
   }[]>([]);
 
   const stats = [{
-    number: "35,368",
+    number: "468",
     label: "Active partners",
-    value: 35368
+    value: 468
   }, {
-    number: "7,065",
+    number: "1,065",
     label: "Partner agents",
-    value: 7065
+    value: 1065
   }, {
-    number: "$700M",
+    number: "$70M",
     label: "Total partner earnings",
-    value: 700
+    value: 70
   }];
 
   useEffect(() => {
