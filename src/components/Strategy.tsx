@@ -1,21 +1,18 @@
-
 import { Button } from "@/components/ui/button";
 import { useRef } from "react";
 import { useInView } from "@/hooks/useInView";
-
 const Strategy = () => {
   const sectionRef = useRef<HTMLElement>(null);
-  const isInView = useInView(sectionRef, { threshold: 0.2 });
-  
-  return (
-    <section id="strategy" className="section bg-white" ref={sectionRef}>
+  const isInView = useInView(sectionRef, {
+    threshold: 0.2
+  });
+  return <section id="strategy" className="section bg-white" ref={sectionRef}>
       <div className="container-custom">
         <div className="text-center mb-16">
           <h2 className="section-title">Choose your work strategy</h2>
         </div>
         
-        <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8 staggered-appear" 
-             className={`grid md:grid-cols-2 lg:grid-cols-3 gap-8 staggered-appear ${isInView ? 'active' : ''}`}>
+        <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8 staggered-appear" className={`grid md:grid-cols-2 lg:grid-cols-3 gap-8 staggered-appear ${isInView ? 'active' : ''}`}>
           <div className="bg-whitevill-beige p-8 rounded-lg shadow-sm hover-scale">
             <div className="mb-6">
               <span className="text-5xl text-gold-dark font-playfair">%</span>
@@ -64,7 +61,7 @@ const Strategy = () => {
           
           <div className="md:col-span-2 lg:col-span-1 bg-whitevill-beige p-8 rounded-lg shadow-sm hover-scale">
             <div className="mb-6">
-              <img src="/placeholder.svg" alt="Dashboard" className="w-full h-48 object-cover rounded" />
+              <img alt="Dashboard" className="w-full h-48 object-cover rounded" src="/lovable-uploads/1568b690-c5a6-4d76-b8e8-0c9049d59df2.jpg" />
             </div>
             <h3 className="text-2xl font-bold mb-3">Advanced Partner Dashboard</h3>
             <p className="text-gray-700 mb-6">
@@ -79,8 +76,6 @@ const Strategy = () => {
           <Button className="btn-secondary px-10 hover:scale-105 transition-transform">See All Benefits</Button>
         </div>
       </div>
-    </section>
-  );
+    </section>;
 };
-
 export default Strategy;

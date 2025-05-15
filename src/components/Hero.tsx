@@ -1,49 +1,38 @@
-
 import { Button } from "@/components/ui/button";
 import { ArrowRight } from "lucide-react";
 import { useEffect, useState, useRef } from "react";
-
 const Hero = () => {
   const [isLoaded, setIsLoaded] = useState(false);
   const rotatingElementRef = useRef<HTMLDivElement>(null);
-  
   useEffect(() => {
     setIsLoaded(true);
-    
+
     // 3D rotation effect
     const rotatingElement = rotatingElementRef.current;
     if (!rotatingElement) return;
-    
     let rotationX = 0;
     let rotationY = 0;
     let animationFrameId: number;
-    
     const handleMouseMove = (e: MouseEvent) => {
       const x = (e.clientX / window.innerWidth - 0.5) * 10;
       const y = (e.clientY / window.innerHeight - 0.5) * 10;
-      
       rotationX = y;
       rotationY = -x;
     };
-    
     const animate = () => {
       if (rotatingElement) {
         rotatingElement.style.transform = `perspective(1000px) rotateX(${rotationX}deg) rotateY(${rotationY}deg) rotate3d(1, 1, 1, ${rotationY}deg)`;
       }
       animationFrameId = requestAnimationFrame(animate);
     };
-    
     window.addEventListener('mousemove', handleMouseMove);
     animate();
-    
     return () => {
       window.removeEventListener('mousemove', handleMouseMove);
       cancelAnimationFrame(animationFrameId);
     };
   }, []);
-
-  return (
-    <section className="relative py-20 md:py-32 overflow-hidden hero-pattern">
+  return <section className="relative py-20 md:py-32 overflow-hidden hero-pattern">
       <div className="container-custom">
         <div className="grid gap-8 lg:grid-cols-2 lg:gap-16 items-center">
           <div className={`space-y-6 transition-all duration-700 ${isLoaded ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-10'}`}>
@@ -73,23 +62,16 @@ const Hero = () => {
           </div>
           
           <div className="relative">
-            <div 
-              ref={rotatingElementRef}
-              className={`aspect-square rotate-3 rounded-2xl bg-muted object-cover shadow-xl hidden md:block transition-all duration-1000 ${isLoaded ? 'opacity-100' : 'opacity-0'}`}
-              style={{ transformStyle: 'preserve-3d', transition: 'transform 0.1s ease-out' }}
-            >
+            <div ref={rotatingElementRef} className={`aspect-square rotate-3 rounded-2xl bg-muted object-cover shadow-xl hidden md:block transition-all duration-1000 ${isLoaded ? 'opacity-100' : 'opacity-0'}`} style={{
+            transformStyle: 'preserve-3d',
+            transition: 'transform 0.1s ease-out'
+          }}>
               <div className="absolute inset-0 rounded-2xl bg-gradient-to-br from-violet-400 to-indigo-600 opacity-20"></div>
-              <img 
-                src="/placeholder.svg" 
-                alt="Property image" 
-                className="h-full w-full rounded-2xl object-cover mix-blend-overlay" 
-              />
+              <img alt="Property image" className="h-full w-full rounded-2xl object-cover mix-blend-overlay" src="/lovable-uploads/da4a6f5b-508e-4167-9ff9-abfc587997c3.jpg" />
             </div>
             
-            <div 
-              className={`absolute -bottom-12 -left-12 aspect-square w-64 rounded-2xl bg-muted object-cover shadow-xl hidden lg:block transition-all duration-1000 delay-300 ${isLoaded ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-10'}`}
-            >
-              <img src="/placeholder.svg" alt="Interior image" className="h-full w-full rounded-2xl object-cover" />
+            <div className={`absolute -bottom-12 -left-12 aspect-square w-64 rounded-2xl bg-muted object-cover shadow-xl hidden lg:block transition-all duration-1000 delay-300 ${isLoaded ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-10'}`}>
+              <img alt="Interior image" className="h-full w-full rounded-2xl object-cover" src="/lovable-uploads/a4ca8824-aa98-495e-b66e-6ef6a66db22a.jpg" />
             </div>
           </div>
         </div>
@@ -102,18 +84,11 @@ const Hero = () => {
               Trusted by industry leaders
             </p>
             <div className="flex flex-wrap items-center justify-center gap-8 grayscale">
-              {[1, 2, 3, 4].map(i => (
-                <div 
-                  key={i} 
-                  className={`h-8 w-28 bg-muted rounded-md transition-all duration-700 delay-${i * 100} ${isLoaded ? 'opacity-100 scale-100' : 'opacity-0 scale-95'}`}
-                ></div>
-              ))}
+              {[1, 2, 3, 4].map(i => <div key={i} className={`h-8 w-28 bg-muted rounded-md transition-all duration-700 delay-${i * 100} ${isLoaded ? 'opacity-100 scale-100' : 'opacity-0 scale-95'}`}></div>)}
             </div>
           </div>
         </div>
       </div>
-    </section>
-  );
+    </section>;
 };
-
 export default Hero;

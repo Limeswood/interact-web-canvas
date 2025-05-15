@@ -4,7 +4,7 @@ const About = () => {
       <div className="container-custom">
         <div className="grid md:grid-cols-2 gap-12 items-center">
           <div>
-            <h2 className="section-title">We sell real estate to clients all over the world</h2>
+            <h2 className="section-title">We sell dubai lifestyle to clients all over the world</h2>
             <p className="mb-6 text-lg">Limeswood is a premier luxury real estate company with a global presence. Our expertise spans residential, commercial, and investment properties across exclusive locations in UAE.</p>
             <p className="mb-8 text-lg">With over 9+ years of experience, we've established ourselves as industry leaders, connecting clients with exceptional properties and investment opportunities.</p>
             <Button className="btn-primary">Discover Our Portfolio</Button>
@@ -12,7 +12,7 @@ const About = () => {
           
           <div className="relative">
             <div className="h-[400px] md:h-[500px] bg-gray-200 rounded-lg overflow-hidden">
-              <img src="/placeholder.svg" alt="Luxury Property" className="w-full h-full object-cover" />
+              <img alt="Luxury Property" className="w-full h-full object-cover" src="/lovable-uploads/332230f7-69b8-4e37-a7a5-a78b389f513a.jpg" />
               <div className="absolute bottom-0 left-0 bg-white p-6 md:p-8 rounded-tr-lg">
                 <p className="text-3xl font-playfair font-bold text-gold-dark">+9</p>
                 <p className="text-gray-600">Years of Excellence</p>
