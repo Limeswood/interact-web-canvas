@@ -71,7 +71,7 @@ const Hero = () => {
             </div>
             
             <div className={`absolute -bottom-12 -left-12 aspect-square w-64 rounded-2xl bg-muted object-cover shadow-xl hidden lg:block transition-all duration-1000 delay-300 ${isLoaded ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-10'}`}>
-              <img alt="Interior image" className="h-full w-full rounded-2xl object-cover" src="/lovable-uploads/a4ca8824-aa98-495e-b66e-6ef6a66db22a.jpg" />
+              <img alt="Interior image" className="h-full w-full rounded-2xl object-cover" src="/lovable-uploads/d70deec2-6e99-4f1c-ba3a-371bb0f79f5a.jpg" />
             </div>
           </div>
         </div>
