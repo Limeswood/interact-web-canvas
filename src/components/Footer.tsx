@@ -1,14 +1,11 @@
-
 import { Instagram, Facebook, Linkedin } from "lucide-react";
-
 const Footer = () => {
-  return (
-    <footer className="bg-gray-900 text-white pt-16 pb-8">
+  return <footer className="bg-gray-900 text-white pt-16 pb-8">
       <div className="container-custom">
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8 mb-12">
           <div>
             <h2 className="text-2xl font-bold font-playfair mb-4">
-              <span className="text-whitevill-red">White</span>Vill
+              <span className="text-whitevill-red">Limeswood</span>Vill
             </h2>
             <p className="text-gray-400 mb-4">
               Premium real estate partnerships for discerning professionals and agencies.
@@ -49,10 +46,10 @@ const Footer = () => {
           <div>
             <h3 className="text-lg font-bold mb-4">Contact</h3>
             <address className="not-italic text-gray-400">
-              <p className="mb-2">1234 Luxury Lane</p>
-              <p className="mb-2">Dubai, UAE</p>
-              <p className="mb-2">Email: partners@whitevill.com</p>
-              <p>Phone: +971 4 123 4567</p>
+              <p className="mb-2">1304 Control Tower, Motor City, Dubai, UAE</p>
+              
+              <p className="mb-2">Email: partners@limeswood.ae</p>
+              <p>Phone: +971 55 870 2565</p>
             </address>
           </div>
         </div>
@@ -70,8 +67,6 @@ const Footer = () => {
           </div>
         </div>
       </div>
-    </footer>
-  );
+    </footer>;
 };
-
 export default Footer;

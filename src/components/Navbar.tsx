@@ -1,14 +1,10 @@
-
 import { useState, useEffect } from 'react';
 import { Button } from '@/components/ui/button';
 import { Menu, X } from 'lucide-react';
-
 const Navbar = () => {
   const [isScrolled, setIsScrolled] = useState(false);
   const [isMenuOpen, setIsMenuOpen] = useState(false);
-
   const toggleMenu = () => setIsMenuOpen(!isMenuOpen);
-
   useEffect(() => {
     const handleScroll = () => {
       if (window.scrollY > 50) {
@@ -17,19 +13,16 @@ const Navbar = () => {
         setIsScrolled(false);
       }
     };
-
     window.addEventListener('scroll', handleScroll);
     return () => {
       window.removeEventListener('scroll', handleScroll);
     };
   }, []);
-
-  return (
-    <header className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${isScrolled ? 'bg-white shadow-md py-3' : 'bg-transparent py-6'}`}>
+  return <header className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${isScrolled ? 'bg-white shadow-md py-3' : 'bg-transparent py-6'}`}>
       <div className="container-custom flex items-center justify-between">
         <a href="#" className="z-50">
           <h1 className="text-2xl font-bold font-playfair">
-            <span className="text-whitevill-red">White</span>Vill
+            <span className="text-whitevill-red">Limes</span>Vill
           </h1>
         </a>
 
@@ -44,11 +37,7 @@ const Navbar = () => {
         </nav>
 
         {/* Mobile menu button */}
-        <button 
-          className="lg:hidden z-50 text-2xl focus:outline-none"
-          onClick={toggleMenu}
-          aria-label="Toggle menu"
-        >
+        <button className="lg:hidden z-50 text-2xl focus:outline-none" onClick={toggleMenu} aria-label="Toggle menu">
           {isMenuOpen ? <X /> : <Menu />}
         </button>
 
@@ -64,8 +53,6 @@ const Navbar = () => {
           </div>
         </div>
       </div>
-    </header>
-  );
+    </header>;
 };
-
 export default Navbar;

@@ -1,9 +1,6 @@
-
 import { Button } from "@/components/ui/button";
-
 const Strategy = () => {
-  return (
-    <section id="strategy" className="section bg-white">
+  return <section id="strategy" className="section bg-white">
       <div className="container-custom">
         <div className="text-center mb-16">
           <h2 className="section-title">Choose your work strategy</h2>
@@ -15,21 +12,19 @@ const Strategy = () => {
               <span className="text-5xl text-gold-dark font-playfair">%</span>
             </div>
             <h3 className="text-2xl font-bold mb-3">Daily rewards on your balance</h3>
-            <p className="text-gray-700 mb-6">
-              Earn passive income with competitive daily rewards on your account balance
-            </p>
+            <p className="text-gray-700 mb-6">Earn passive income with competitive rewards on your account balance</p>
             <ul className="mb-6 space-y-2">
               <li className="flex items-start">
                 <span className="text-whitevill-red mr-2">✓</span>
-                <span>Automatic daily payouts</span>
+                <span>Automatic payouts</span>
               </li>
               <li className="flex items-start">
                 <span className="text-whitevill-red mr-2">✓</span>
-                <span>Competitive interest rates</span>
+                <span>Competitive referal system</span>
               </li>
               <li className="flex items-start">
                 <span className="text-whitevill-red mr-2">✓</span>
-                <span>No minimum balance requirements</span>
+                <span>No minimum referal requirements</span>
               </li>
             </ul>
           </div>
@@ -60,11 +55,7 @@ const Strategy = () => {
           
           <div className="md:col-span-2 lg:col-span-1 bg-whitevill-beige p-8 rounded-lg shadow-sm hover-scale">
             <div className="mb-6">
-              <img 
-                src="/placeholder.svg" 
-                alt="Dashboard" 
-                className="w-full h-48 object-cover rounded"
-              />
+              <img src="/placeholder.svg" alt="Dashboard" className="w-full h-48 object-cover rounded" />
             </div>
             <h3 className="text-2xl font-bold mb-3">Advanced Partner Dashboard</h3>
             <p className="text-gray-700 mb-6">
@@ -79,8 +70,6 @@ const Strategy = () => {
           <Button className="btn-secondary px-10">See All Benefits</Button>
         </div>
       </div>
-    </section>
-  );
+    </section>;
 };
-
 export default Strategy;
