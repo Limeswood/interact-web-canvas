@@ -1,12 +1,21 @@
+
 import { Button } from "@/components/ui/button";
+import { useRef } from "react";
+import { useInView } from "@/hooks/useInView";
+
 const Strategy = () => {
-  return <section id="strategy" className="section bg-white">
+  const sectionRef = useRef<HTMLElement>(null);
+  const isInView = useInView(sectionRef, { threshold: 0.2 });
+  
+  return (
+    <section id="strategy" className="section bg-white" ref={sectionRef}>
       <div className="container-custom">
         <div className="text-center mb-16">
           <h2 className="section-title">Choose your work strategy</h2>
         </div>
         
-        <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
+        <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8 staggered-appear" 
+             className={`grid md:grid-cols-2 lg:grid-cols-3 gap-8 staggered-appear ${isInView ? 'active' : ''}`}>
           <div className="bg-whitevill-beige p-8 rounded-lg shadow-sm hover-scale">
             <div className="mb-6">
               <span className="text-5xl text-gold-dark font-playfair">%</span>
@@ -67,9 +76,11 @@ const Strategy = () => {
         </div>
         
         <div className="mt-16 text-center">
-          <Button className="btn-secondary px-10">See All Benefits</Button>
+          <Button className="btn-secondary px-10 hover:scale-105 transition-transform">See All Benefits</Button>
         </div>
       </div>
-    </section>;
+    </section>
+  );
 };
+
 export default Strategy;

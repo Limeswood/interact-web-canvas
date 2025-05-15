@@ -4,6 +4,7 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { useToast } from "@/components/ui/use-toast";
+import { LoaderCircle } from "lucide-react";
 
 const ContactForm = () => {
   const { toast } = useToast();
@@ -15,6 +16,7 @@ const ContactForm = () => {
   });
 
   const [loading, setLoading] = useState(false);
+  const [formState, setFormState] = useState<'idle' | 'submitting' | 'success' | 'error'>('idle');
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
     const { name, value } = e.target;
@@ -27,6 +29,7 @@ const ContactForm = () => {
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     setLoading(true);
+    setFormState('submitting');
     
     // Simulate form submission
     setTimeout(() => {
@@ -35,12 +38,17 @@ const ContactForm = () => {
         description: "We'll be in touch with you shortly.",
       });
       setLoading(false);
+      setFormState('success');
       setFormData({
         name: "",
         email: "",
         company: "",
         message: "",
       });
+      
+      setTimeout(() => {
+        setFormState('idle');
+      }, 3000);
     }, 1500);
   };
 
@@ -54,7 +62,7 @@ const ContactForm = () => {
               Join our exclusive network of real estate professionals and access premium
               properties, competitive commissions, and comprehensive support tools.
             </p>
-            <div className="rounded-lg overflow-hidden">
+            <div className="rounded-lg overflow-hidden transform transition-all duration-500 hover:scale-[1.02] hover:shadow-lg">
               <img 
                 src="/placeholder.svg" 
                 alt="WhiteVill Headquarters" 
@@ -63,7 +71,7 @@ const ContactForm = () => {
             </div>
           </div>
           
-          <div className="bg-whitevill-beige p-8 rounded-lg shadow-lg">
+          <div className="bg-whitevill-beige p-8 rounded-lg shadow-lg transform transition-all duration-500 hover:shadow-xl">
             <form onSubmit={handleSubmit} className="space-y-6">
               <div>
                 <label htmlFor="name" className="block mb-2 font-medium">
@@ -76,7 +84,8 @@ const ContactForm = () => {
                   onChange={handleChange}
                   placeholder="Your full name"
                   required
-                  className="bg-white border-gray-300"
+                  className="bg-white border-gray-300 transition-all focus:ring-2 focus:ring-primary/20"
+                  disabled={loading}
                 />
               </div>
               
@@ -92,7 +101,8 @@ const ContactForm = () => {
                   onChange={handleChange}
                   placeholder="you@example.com"
                   required
-                  className="bg-white border-gray-300"
+                  className="bg-white border-gray-300 transition-all focus:ring-2 focus:ring-primary/20"
+                  disabled={loading}
                 />
               </div>
               
@@ -106,7 +116,8 @@ const ContactForm = () => {
                   value={formData.company}
                   onChange={handleChange}
                   placeholder="Your company name"
-                  className="bg-white border-gray-300"
+                  className="bg-white border-gray-300 transition-all focus:ring-2 focus:ring-primary/20"
+                  disabled={loading}
                 />
               </div>
               
@@ -121,16 +132,30 @@ const ContactForm = () => {
                   onChange={handleChange}
                   placeholder="Tell us about your experience and interests"
                   rows={4}
-                  className="bg-white border-gray-300"
+                  className="bg-white border-gray-300 transition-all focus:ring-2 focus:ring-primary/20"
+                  disabled={loading}
                 />
               </div>
               
               <Button 
                 type="submit" 
-                className="bg-whitevill-red hover:bg-opacity-90 text-white w-full py-6"
+                className={`bg-whitevill-red hover:bg-opacity-90 text-white w-full py-6 transition-all ${
+                  formState === 'success' ? 'bg-green-600' : 
+                  formState === 'error' ? 'bg-red-600' : 
+                  'bg-whitevill-red'
+                }`}
                 disabled={loading}
               >
-                {loading ? "Submitting..." : "Submit Application"}
+                {loading ? (
+                  <span className="flex items-center justify-center">
+                    <LoaderCircle className="animate-spin mr-2" size={20} />
+                    Submitting...
+                  </span>
+                ) : formState === 'success' ? (
+                  "Submitted Successfully!"
+                ) : (
+                  "Submit Application"
+                )}
               </Button>
             </form>
           </div>

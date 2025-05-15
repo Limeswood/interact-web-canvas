@@ -1,7 +1,7 @@
 
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { Button } from '@/components/ui/button';
-import { ArrowLeft, ArrowRight } from 'lucide-react';
+import { ArrowLeft, ArrowRight, RefreshCw } from 'lucide-react';
 
 const testimonials = [
   {
@@ -29,13 +29,59 @@ const testimonials = [
 
 const Testimonials = () => {
   const [currentIndex, setCurrentIndex] = useState(0);
+  const [isLoading, setIsLoading] = useState(false);
+  const [isAnimating, setIsAnimating] = useState(false);
+  const [animationDirection, setAnimationDirection] = useState('right');
   
   const nextTestimonial = () => {
-    setCurrentIndex((currentIndex + 1) % testimonials.length);
+    if (isAnimating) return;
+    
+    setIsLoading(true);
+    setIsAnimating(true);
+    setAnimationDirection('right');
+    
+    setTimeout(() => {
+      setCurrentIndex((currentIndex + 1) % testimonials.length);
+      setIsLoading(false);
+      
+      setTimeout(() => {
+        setIsAnimating(false);
+      }, 500);
+    }, 300);
   };
   
   const prevTestimonial = () => {
-    setCurrentIndex((currentIndex - 1 + testimonials.length) % testimonials.length);
+    if (isAnimating) return;
+    
+    setIsLoading(true);
+    setIsAnimating(true);
+    setAnimationDirection('left');
+    
+    setTimeout(() => {
+      setCurrentIndex((currentIndex - 1 + testimonials.length) % testimonials.length);
+      setIsLoading(false);
+      
+      setTimeout(() => {
+        setIsAnimating(false);
+      }, 500);
+    }, 300);
+  };
+
+  const selectTestimonial = (index: number) => {
+    if (isAnimating || index === currentIndex) return;
+    
+    setIsLoading(true);
+    setIsAnimating(true);
+    setAnimationDirection(index > currentIndex ? 'right' : 'left');
+    
+    setTimeout(() => {
+      setCurrentIndex(index);
+      setIsLoading(false);
+      
+      setTimeout(() => {
+        setIsAnimating(false);
+      }, 500);
+    }, 300);
   };
   
   return (
@@ -45,14 +91,20 @@ const Testimonials = () => {
           <h2 className="section-title">Feedback from our partners</h2>
         </div>
         
-        <div className="grid md:grid-cols-2 gap-8">
-          {testimonials.slice(currentIndex, currentIndex + 2).map((testimonial) => (
+        <div className="grid md:grid-cols-2 gap-8 relative min-h-[250px]">
+          {testimonials.slice(currentIndex, currentIndex + 2).map((testimonial, index) => (
             <div 
               key={testimonial.id} 
-              className="bg-white p-8 rounded-lg shadow-md"
+              className={`
+                bg-white p-8 rounded-lg shadow-md transition-all duration-500 transform
+                ${isAnimating && index === 0 ? 
+                  (animationDirection === 'right' ? 'opacity-0 -translate-x-full' : 'opacity-0 translate-x-full') : 
+                  'opacity-100 translate-x-0'}
+              `}
+              style={{ perspective: '1000px', transformStyle: 'preserve-3d' }}
             >
-              <div className="flex items-center mb-6">
-                <div className="w-16 h-16 rounded-full overflow-hidden mr-4">
+              <div className={`flex items-center mb-6 ${isLoading ? 'animate-pulse' : ''}`}>
+                <div className="w-16 h-16 rounded-full overflow-hidden mr-4 transform hover:scale-105 transition-transform">
                   <img 
                     src={testimonial.image} 
                     alt={testimonial.name} 
@@ -70,6 +122,12 @@ const Testimonials = () => {
               </Button>
             </div>
           ))}
+          
+          {isLoading && (
+            <div className="absolute inset-0 flex items-center justify-center">
+              <RefreshCw className="h-8 w-8 text-primary animate-spin" />
+            </div>
+          )}
         </div>
         
         <div className="flex justify-center mt-8 space-x-2">
@@ -77,7 +135,8 @@ const Testimonials = () => {
             variant="outline" 
             size="icon" 
             onClick={prevTestimonial}
-            className="rounded-full"
+            className="rounded-full transition-transform hover:scale-110"
+            disabled={isAnimating}
             aria-label="Previous testimonial"
           >
             <ArrowLeft className="h-4 w-4" />
@@ -86,12 +145,13 @@ const Testimonials = () => {
           {testimonials.map((_, index) => (
             <button
               key={index}
-              className={`w-3 h-3 rounded-full ${
+              className={`w-3 h-3 rounded-full transition-all ${
                 index === currentIndex || index === (currentIndex + 1) % testimonials.length
-                  ? "bg-whitevill-red"
+                  ? "bg-whitevill-red scale-110"
                   : "bg-gray-300"
               }`}
-              onClick={() => setCurrentIndex(index)}
+              onClick={() => selectTestimonial(index)}
+              disabled={isAnimating}
               aria-label={`Go to testimonial ${index + 1}`}
             />
           ))}
@@ -100,7 +160,8 @@ const Testimonials = () => {
             variant="outline" 
             size="icon" 
             onClick={nextTestimonial}
-            className="rounded-full"
+            className="rounded-full transition-transform hover:scale-110"
+            disabled={isAnimating}
             aria-label="Next testimonial"
           >
             <ArrowRight className="h-4 w-4" />
