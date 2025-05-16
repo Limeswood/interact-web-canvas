@@ -50,11 +50,11 @@ const ContactForm = () => {
     validateField('role', e.target.value);
   };
 
-  const handleSubmit = async (e: React.FormEvent) => {
-    e.preventDefault();
+  const handleSubmit = (e: React.FormEvent) => {
     // Validate all fields
     const validationResult = contactFormSchema.safeParse(formData);
     if (!validationResult.success) {
+      e.preventDefault();
       const newErrors: Partial<Record<keyof ContactFormData, string>> = {};
       validationResult.error.errors.forEach(error => {
         const path = error.path[0] as keyof ContactFormData;
@@ -63,49 +63,7 @@ const ContactForm = () => {
       setErrors(newErrors);
       return;
     }
-    setLoading(true);
-    setFormState('submitting');
-    try {
-      // Prepare FormData for PHP
-      const fd = new FormData();
-      Object.entries(formData).forEach(([key, value]) => {
-        fd.append(key, value);
-      });
-      const response = await fetch('/sendmail.php', {
-        method: 'POST',
-        body: fd,
-      });
-      const data = await response.json();
-      if (data.status === 'success') {
-        toast({
-          title: "Form submitted successfully!",
-          description: "We'll be in touch with you shortly.",
-        });
-        setFormState('success');
-        setFormData({
-          name: "",
-          email: "",
-          phone: "",
-          role: "agent",
-          message: ""
-        });
-        setErrors({});
-      } else {
-        throw new Error(data.error || 'Failed to submit form');
-      }
-    } catch (error) {
-      setFormState('error');
-      toast({
-        variant: "destructive",
-        title: "Error submitting form",
-        description: error instanceof Error ? error.message : "An unexpected error occurred",
-      });
-    } finally {
-      setLoading(false);
-      if (formState === 'success') {
-        setTimeout(() => setFormState('idle'), 3000);
-      }
-    }
+    // If valid, allow the form to submit (Netlify will handle it)
   };
 
   return (
@@ -138,7 +96,18 @@ const ContactForm = () => {
               </Alert>
             )}
             
-            <form onSubmit={handleSubmit} className="space-y-6" noValidate>
+            <form
+              name="contact"
+              method="POST"
+              data-netlify="true"
+              netlify-honeypot="bot-field"
+              onSubmit={handleSubmit}
+              className="space-y-6"
+              noValidate
+            >
+              {/* Netlify hidden fields */}
+              <input type="hidden" name="form-name" value="contact" />
+              <input type="hidden" name="bot-field" />
               <div>
                 <label htmlFor="name" className="block mb-2 font-medium">
                   Full Name
