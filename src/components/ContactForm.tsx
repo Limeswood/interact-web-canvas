@@ -97,18 +97,12 @@ const ContactForm = () => {
             )}
             
             <form
-              name="contact"
+              action="https://formspree.io/f/xjkwlyyr"
               method="POST"
-              data-netlify="true"
-              netlify-honeypot="bot-field"
-              action="/success"
               onSubmit={handleSubmit}
               className="space-y-6"
               noValidate
             >
-              {/* Netlify hidden fields */}
-              <input type="hidden" name="form-name" value="contact" />
-              <input type="hidden" name="bot-field" />
               <div>
                 <label htmlFor="name" className="block mb-2 font-medium">
                   Full Name
