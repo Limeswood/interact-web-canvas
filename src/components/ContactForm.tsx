@@ -101,6 +101,7 @@ const ContactForm = () => {
               method="POST"
               data-netlify="true"
               netlify-honeypot="bot-field"
+              action="/success"
               onSubmit={handleSubmit}
               className="space-y-6"
               noValidate
