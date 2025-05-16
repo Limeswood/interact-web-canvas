@@ -52,7 +52,6 @@ const ContactForm = () => {
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    
     // Validate all fields
     const validationResult = contactFormSchema.safeParse(formData);
     if (!validationResult.success) {
@@ -64,14 +63,20 @@ const ContactForm = () => {
       setErrors(newErrors);
       return;
     }
-
     setLoading(true);
     setFormState('submitting');
-
     try {
-      const response = await ApiService.submitContactForm(formData);
-      
-      if (response.status === 'success') {
+      // Prepare FormData for PHP
+      const fd = new FormData();
+      Object.entries(formData).forEach(([key, value]) => {
+        fd.append(key, value);
+      });
+      const response = await fetch('/sendmail.php', {
+        method: 'POST',
+        body: fd,
+      });
+      const data = await response.json();
+      if (data.status === 'success') {
         toast({
           title: "Form submitted successfully!",
           description: "We'll be in touch with you shortly.",
@@ -86,11 +91,10 @@ const ContactForm = () => {
         });
         setErrors({});
       } else {
-        throw new Error(response.error || 'Failed to submit form');
+        throw new Error(data.error || 'Failed to submit form');
       }
     } catch (error) {
       setFormState('error');
-      console.error('Contact form submission error:', error);
       toast({
         variant: "destructive",
         title: "Error submitting form",
