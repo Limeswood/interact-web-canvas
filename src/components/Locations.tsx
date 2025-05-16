@@ -24,7 +24,7 @@ const Locations = () => {
   return <section id="locations" className="section bg-white">
       <div className="container-custom">
         <div className="text-center mb-12">
-          <h2 className="section-title">UAE Top Locations</h2>
+          <h2 className="section-title">Top Locations in UAE</h2>
           <p className="text-gray-600 max-w-2xl mx-auto">We operate in the most prestigious locations across the UAE, providing exclusive access to luxury properties in entire landscape.</p>
         </div>
         

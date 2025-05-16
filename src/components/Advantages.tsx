@@ -28,7 +28,6 @@ const advantages: Advantage[] = [
     title: 'The Partner Program',
     description: [
       "Every client's step is digitised. Your applications are instantly downloaded to our CRM and then are distributed among departments and brokers based on budget or purpose.",
-      "On the portal you are able to see what step you're currently in.",
       "Reports are available at any time."
     ]
   }

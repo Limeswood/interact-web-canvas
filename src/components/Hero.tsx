@@ -32,11 +32,11 @@ const Hero = () => {
       cancelAnimationFrame(animationFrameId);
     };
   }, []);
-  return <section className="relative py-20 md:py-32 overflow-hidden hero-pattern">
+  return <section className="relative pt-10 pb-20 md:py-32 overflow-hidden hero-pattern">
       <div className="container-custom">
         <div className="grid gap-8 lg:grid-cols-2 lg:gap-16 items-center">
           <div className={`space-y-6 transition-all duration-700 ${isLoaded ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-10'}`}>
-            <div className="inline-flex items-center rounded-full border px-4 py-1.5 text-sm font-medium bg-background">
+            <div className="inline-flex items-center rounded-full border px-4 py-1.5 text-sm font-medium bg-background mt-10 md:mt-6">
               <span className="flex h-2 w-2 rounded-full bg-primary mr-2"></span>
               Exclusive Partnership Opportunity
             </div>
@@ -79,13 +79,22 @@ const Hero = () => {
         </div>
       </div>
       
-      <div className="mt-16 border-t bg-background/50 py-8 backdrop-blur-sm">
+      <div className="mt-8 md:mt-16 border-t bg-background/50 pb-2 md:pb-8 pt-8 backdrop-blur-sm">
         <div className="container-custom">
-          <div className="flex flex-wrap justify-center items-center gap-8 md:gap-16 mt-8">
-            <img src="/lovable-uploads/emaar-logo.svg" alt="Emaar Logo" className="h-12 w-auto grayscale hover:grayscale-0 transition-all duration-300 drop-shadow-md bg-white rounded p-2" loading="lazy" />
-            <img src="/lovable-uploads/Damac_logo.svg" alt="Damac Logo" className="h-12 w-auto grayscale hover:grayscale-0 transition-all duration-300 drop-shadow-md bg-white rounded p-2" loading="lazy" />
-            <img src="/lovable-uploads/azizi-logo.svg" alt="Azizi Logo" className="h-12 w-auto grayscale hover:grayscale-0 transition-all duration-300 drop-shadow-md bg-white rounded p-2" loading="lazy" />
-            <img src="/lovable-uploads/arada-developer-logo.svg" alt="Arada Logo" className="h-12 w-auto grayscale hover:grayscale-0 transition-all duration-300 drop-shadow-md bg-white rounded p-2" loading="lazy" />
+          <h2 className="text-center text-lg md:text-xl font-semibold text-foreground mb-6">Trusted by industry leaders</h2>
+          <div className="flex flex-nowrap justify-center items-center gap-3 md:gap-8 overflow-x-auto">
+            <div className="h-12 w-28 md:h-16 md:w-40 flex items-center justify-center bg-white rounded shadow-sm p-1 md:p-2">
+              <img src="/lovable-uploads/emaar-logo.svg" alt="Emaar Logo" className="max-h-8 max-w-[80px] md:max-h-12 md:max-w-[120px] w-auto h-auto grayscale hover:grayscale-0 transition-all duration-300 drop-shadow-md" loading="lazy" />
+            </div>
+            <div className="h-12 w-28 md:h-16 md:w-40 flex items-center justify-center bg-white rounded shadow-sm p-1 md:p-2">
+              <img src="/lovable-uploads/Damac_logo.svg" alt="Damac Logo" className="max-h-8 max-w-[80px] md:max-h-12 md:max-w-[120px] w-auto h-auto grayscale hover:grayscale-0 transition-all duration-300 drop-shadow-md" loading="lazy" />
+            </div>
+            <div className="h-12 w-28 md:h-16 md:w-40 flex items-center justify-center bg-white rounded shadow-sm p-1 md:p-2">
+              <img src="/lovable-uploads/azizi-logo.svg" alt="Azizi Logo" className="max-h-8 max-w-[80px] md:max-h-12 md:max-w-[120px] w-auto h-auto grayscale hover:grayscale-0 transition-all duration-300 drop-shadow-md" loading="lazy" />
+            </div>
+            <div className="h-12 w-28 md:h-16 md:w-40 flex items-center justify-center bg-white rounded shadow-sm p-1 md:p-2">
+              <img src="/lovable-uploads/arada-developer-logo.svg" alt="Arada Logo" className="max-h-8 max-w-[80px] md:max-h-12 md:max-w-[120px] w-auto h-auto grayscale hover:grayscale-0 transition-all duration-300 drop-shadow-md" loading="lazy" />
+            </div>
           </div>
         </div>
       </div>

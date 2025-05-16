@@ -5,7 +5,7 @@ const Footer = () => {
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8 mb-12">
           <div>
             <h2 className="text-2xl font-bold font-playfair mb-4">
-              <span className="text-limeswood-red">Limes</span>Wood
+              <span className="text-limeswood-red">Limes</span>wood
             </h2>
             <p className="text-gray-400 mb-4">
               Premium real estate partnerships for discerning professionals and agencies.
