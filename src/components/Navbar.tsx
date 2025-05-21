@@ -57,12 +57,29 @@ const Navbar = () => {
 
   return (
     <>
+      <style>{`
+        .custom-gradient-last-word {
+          background-image: linear-gradient(to right, #D4AF37, #9370DB 40%, #00000B 99%);
+          background-size: 300% 100%;
+          background-position: 0% 50%;
+          -webkit-background-clip: text;
+          background-clip: text;
+          color: transparent;
+          -webkit-text-fill-color: transparent;
+          animation: gradientLoop 10s linear infinite alternate;
+          will-change: background-position;
+        }
+        @keyframes gradientLoop {
+          0% { background-position: 0% 50%; }
+          100% { background-position: 100% 50%; }
+        }
+      `}</style>
       <a href="#main" id="skip-to-content" className="sr-only focus:not-sr-only absolute top-2 left-2 bg-limeswood-red text-white px-4 py-2 rounded z-[100]">Skip to content</a>
       <header className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${isScrolled ? 'bg-white shadow-md py-3' : 'bg-transparent py-6'}`}>
         <div className="container-custom flex items-center justify-between">
           <a href="/" className="z-50" aria-label="Limeswood Home">
             <h1 className="text-2xl font-bold font-playfair">
-              <span className="text-limeswood-red">Limes</span>wood
+              <span className="text-limeswood-red"></span><span className="custom-gradient-last-word">Limeswood</span>
             </h1>
           </a>
 
@@ -117,61 +134,64 @@ const Navbar = () => {
       <div
         id="mobile-menu"
         ref={menuRef}
-        className={`fixed inset-0 z-50 pointer-events-none transition-transform duration-300 ease-in-out ${isMenuOpen ? 'translate-x-0' : 'translate-x-full'} bg-gradient-to-br from-white/90 via-gray-100/90 to-limeswood-red/10 backdrop-blur-xl`}
+        className={`fixed inset-0 z-50 transition-transform duration-300 ease-in-out ${isMenuOpen ? 'translate-x-0' : 'translate-x-full'} bg-gradient-to-br from-white/90 via-gray-100/90 to-limeswood-red/10 backdrop-blur-xl`}
         role="dialog"
         aria-modal="true"
         tabIndex={-1}
       >
-        {/* Overlay */}
+        {/* Overlay - render first so menu content is above it */}
         {isMenuOpen && (
           <div
-            className="fixed inset-0 bg-black/30 z-40 pointer-events-auto"
+            className="fixed inset-0 bg-black/30 z-40"
             aria-hidden="true"
             onClick={() => setIsMenuOpen(false)}
           />
         )}
-        {/* Mobile menu header (absolute, top) */}
-        <div className="absolute top-0 left-0 right-0 flex items-center justify-between px-6 pt-6 pb-2 z-50 pointer-events-auto">
-          <a href="/" aria-label="Limeswood Home">
-            <h1 className="text-2xl font-bold font-playfair">
-              <span className="text-limeswood-red">Limes</span>wood
-            </h1>
-          </a>
-          <button
-            className="text-2xl text-gray-700 focus:outline-none"
-            onClick={() => setIsMenuOpen(false)}
-            aria-label="Close menu"
-          >
-            <X />
-          </button>
-        </div>
-        {/* Centered menu links and button */}
-        <div className="flex flex-col items-center justify-center h-full w-full z-50 pointer-events-auto">
-          <nav aria-label="Mobile navigation" className="w-full">
-            <ul className="flex flex-col items-center gap-6 text-2xl font-semibold">
-              {NAV_LINKS.map((link, i) => (
-                <li key={link.href} className="w-full flex justify-center">
-                  <a
-                    href={link.href}
-                    className="block px-8 py-3 rounded-lg transition-all duration-200 hover:bg-limeswood-red/10 hover:text-limeswood-red focus:outline-none focus:ring-2 focus:ring-limeswood-red focus:bg-limeswood-red/10"
-                    onClick={() => setIsMenuOpen(false)}
-                    aria-current={currentHash === link.href ? 'page' : undefined}
-                    tabIndex={isMenuOpen ? 0 : -1}
-                    ref={i === 0 ? firstLinkRef : undefined}
-                  >
-                    {link.label}
-                  </a>
+        {/* Menu content wrapper with higher z-index */}
+        <div className="relative z-[60] h-full w-full">
+          {/* Mobile menu header (absolute, top) */}
+          <div className="absolute top-0 left-0 right-0 flex items-center justify-between px-6 pt-6 pb-2">
+            <a href="/" aria-label="Limeswood Home">
+              <h1 className="text-2xl font-bold font-playfair">
+                <span className="text-limeswood-red"></span><span className="custom-gradient-last-word">Limeswood</span>
+              </h1>
+            </a>
+            <button
+              className="text-2xl text-gray-700 focus:outline-none"
+              onClick={() => setIsMenuOpen(false)}
+              aria-label="Close menu"
+            >
+              <X />
+            </button>
+          </div>
+          {/* Centered menu links and button */}
+          <div className="flex flex-col items-center justify-center h-full w-full">
+            <nav aria-label="Mobile navigation" className="w-full">
+              <ul className="flex flex-col items-center gap-6 text-2xl font-semibold">
+                {NAV_LINKS.map((link, i) => (
+                  <li key={link.href} className="w-full flex justify-center">
+                    <a
+                      href={link.href}
+                      className="block px-8 py-3 rounded-lg transition-all duration-200 hover:bg-limeswood-red/10 hover:text-limeswood-red focus:outline-none focus:ring-2 focus:ring-limeswood-red focus:bg-limeswood-red/10"
+                      onClick={() => setIsMenuOpen(false)}
+                      aria-current={currentHash === link.href ? 'page' : undefined}
+                      tabIndex={isMenuOpen ? 0 : -1}
+                      ref={i === 0 ? firstLinkRef : undefined}
+                    >
+                      {link.label}
+                    </a>
+                  </li>
+                ))}
+                <li className="w-full flex justify-center mt-4">
+                  <Button className="bg-limeswood-red hover:bg-opacity-90 text-white text-lg px-8 py-3 rounded-lg shadow-lg transition-all duration-200" asChild>
+                    <a href="https://wa.me/971558702565?text=I'm%20Interested%20in%20Referral%20Program" target="_blank" rel="noopener noreferrer">
+                      Join Partnership
+                    </a>
+                  </Button>
                 </li>
-              ))}
-              <li className="w-full flex justify-center mt-4">
-                <Button className="bg-limeswood-red hover:bg-opacity-90 text-white text-lg px-8 py-3 rounded-lg shadow-lg transition-all duration-200" asChild>
-                  <a href="https://wa.me/971558702565?text=I'm%20Interested%20in%20Referral%20Program" target="_blank" rel="noopener noreferrer">
-                    Join Partnership
-                  </a>
-                </Button>
-              </li>
-            </ul>
-          </nav>
+              </ul>
+            </nav>
+          </div>
         </div>
       </div>
     </>

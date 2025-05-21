@@ -30,6 +30,7 @@ const Footer = () => {
               <li><a href="#" className="text-gray-400 hover:text-white transition-colors">Our Team</a></li>
               <li><a href="#" className="text-gray-400 hover:text-white transition-colors">Careers</a></li>
               <li><a href="#" className="text-gray-400 hover:text-white transition-colors">News & Press</a></li>
+              <li><a href="https://limeswood.ae" target="_blank" rel="noopener noreferrer" className="text-limeswood-red hover:text-white font-semibold transition-colors">Visit limeswood.ae</a></li>
             </ul>
           </div>
           
