@@ -9,6 +9,7 @@ import Testimonials from '@/components/Testimonials';
 import Locations from '@/components/Locations';
 import Services from '@/components/Services';
 import ContactForm from '@/components/ContactForm';
+import FAQ from '@/components/FAQ';
 import Footer from '@/components/Footer';
 
 const Index = () => {
@@ -30,6 +31,7 @@ const Index = () => {
         <Locations />
         <Services />
         <ContactForm />
+        <FAQ />
       </main>
       <Footer />
     </div>
